@@ -1,0 +1,22 @@
+<!-- Add inside the exam modal or section of course_details_bootstrap.html -->
+<form id="question-form" action="{% url 'onlinecourse:submit' course.id %}" method="post">
+    {% csrf_token %}
+    {% for lesson in course.lesson_set.all %}
+        {% for question in lesson.question_set.all %}
+        <div class="card mt-1">
+            <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+            <div class="card-body">
+                {% for choice in question.choice_set.all %}
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="choice_{{ choice.id }}" class="form-check-input" value="{{ choice.id }}">
+                        {{ choice.choice_text }}
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+    <input class="btn btn-primary btn-block mt-3" type="submit" value="Submit Exam">
+</form>
